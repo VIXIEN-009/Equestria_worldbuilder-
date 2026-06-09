@@ -3,23 +3,9 @@ import sqlite3
 
 app = Flask(__name__)
 
-DATABASE = "database.db"
-
-def query_db(sql,args=(),one=False):
-  '''connect and query- will retun one item if one=true and can accept arguments as tuple'''
-  db = sqlite3.connect(DATABASE)
-  cursor = db.cursor()
-  cursor.execute(sql)
-  cursor.fetchall()
-  db.commit()
-  db.close()
-  return (results[0] if results else None) if one else results
-
-
 @app.route( '/' )
 def index():
-    results = query_db("SELECT * FROM item")  
-    return render_template('index.html',results=results)
+    return render_template('index.html')
 
 @app.route( '/signup' )
 def signup():
