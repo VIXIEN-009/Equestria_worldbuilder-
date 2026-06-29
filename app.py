@@ -1,9 +1,10 @@
 from flask import Flask , render_template, request,flash, session, redirect
 import sqlite3 
 
-from werkzeug.security import generate_password_hash, check_password_hash
-
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = "SecretStarlightGlimmerKey"
+
 
 @app.route( '/' )
 def index():
@@ -17,7 +18,7 @@ def signup():
     elif request.form['psw'] != request.form['psw-repeat']:
         return render_template('signup.html', passwords_dont_match=True)
     else:
-        redirect('/')
+        return redirect('/')
 
 
 
@@ -28,6 +29,10 @@ def login():
 @app.route( '/libary' )
 def libary():
     return render_template('libary.html')
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
 
 
 if __name__ == "__main__":
