@@ -24,7 +24,13 @@ def signup():
 
 @app.route( '/login' )
 def login():
-    return render_template('login.html')
+    print(request.form)
+    if request.method == 'GET':
+        return render_template('login.html', passwords_dont_match=False)
+    elif request.form['psw'] != request.form['psw']:
+        return render_template('login.html', passwords_dont_match=True)
+    else:
+        return redirect('/')
 
 @app.route( '/libary' )
 def libary():
