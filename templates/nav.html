@@ -41,7 +41,12 @@ ul li a:hover {
 <ul>
   <li><a href="/">About us</a></li>
   <li><a href="/libary">Libary</a></li>
-  <li><a href="/login">login</a></li>
+  {% if not session['user'] %}
+                <li class="login"><a href="/login">Log in</a></li>
+                <li class="login"><a href="/signup">Sign up</a></li>
+            {% else %}
+            <li><a href="/logout">Log out {{session['user']['username']}}</a></li>
+            {% endif %}
 </ul>
 </body>
 </html>
