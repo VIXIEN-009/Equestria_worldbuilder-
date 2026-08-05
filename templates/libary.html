@@ -1,5 +1,26 @@
 {% extends 'base.html' %}
 {% include 'nav.html' %}
 {% block content %}
-<h1> this is the libary </h1>
+
+ {% if not session[user] %}
+ <h1> this is a libaray but your not signned in please</h1>
+ {% else %}
+ <h1> Welcome to the Libary</h1>
+
+<style>
+.AddC {
+  background-color: #5e1a7e;
+  color: white;
+  font-size: 15px;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.AddC:hover {
+  background-color: #d194da;
+}
+</style>
+<a href="/AddCharacter" class="AddC">Add character</a>
 {% endblock %}

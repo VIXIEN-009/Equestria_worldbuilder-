@@ -39,6 +39,7 @@ def signup():
 
 @app.route( '/login', methods=["GET", "POST"] )
 def login():
+    print(request.form)
     if request.method == "POST":
         username = request.form['username']
         password = request.form['psw']
@@ -48,12 +49,8 @@ def login():
             if check_password_hash(user['psw'] ,password):
                 session['user'] = user
                 flash("logged in sucessfully")
-                redirect_location = request.args.get('redirect')
-
-                if redirect_location:
-                    return redirect("/" + redirect_location)
-                else:
-                    return redirect('/')
+                redirect('/')
+    return render_template('login.html')
     
 @app.route( '/libary' )
 def libary():
@@ -62,6 +59,7 @@ def libary():
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
+
 
 
 if __name__ == "__main__":
