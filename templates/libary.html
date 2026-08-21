@@ -3,10 +3,12 @@
 {% block content %}
 
  {% if not session[user] %}
- <h1> this is a libaray but your not signned in please</h1>
+ <center><h1> this is a libaray but your not signned in please</h1></center>
  {% else %}
- <h1> Welcome to the Libary</h1>
+ <center><h1> Welcome to the Libary</h1></center>
+{% endif %}
 
+{% if session[user] %}
 <style>
 .AddC {
   background-color: #5e1a7e;
@@ -21,6 +23,29 @@
 .AddC:hover {
   background-color: #d194da;
 }
+
 </style>
 <a href="/AddCharacter" class="AddC">Add character</a>
+{% else %}
+ <center><h1> not signned in </h1></center>
+  <style>
+.signup {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: medium;
+  background-color: #5e1a7e;
+  color: white;
+  padding: 12px;
+  border: 45px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.signup:hover {
+  background-color: #d194da;
+}
+</style>
+<center><a href="/signup" class="signup">Sign up</a></center>
+
+
+{% endif %}
 {% endblock %}

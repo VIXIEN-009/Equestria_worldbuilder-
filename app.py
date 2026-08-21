@@ -1,20 +1,21 @@
 from flask import Flask , render_template, request,flash, session, redirect
 import sqlite3 
 from werkzeug.security import generate_password_hash, check_password_hash
+
 app = Flask(__name__)
 
-DB = 'db.db'
+DB = 'database.db'
 app.config['SECRET_KEY'] = "SecretStarlightGlimmerKey"
 
-def query_db(sql, args=(), one=False):
-    """Connect to the db and run the provided query
-    Returns a list of dicts, a single dict OR an error
-    Will also execute INSERT, UPDATE and DELETE
-    """
-
-db = sqlite3.connect(DB)
-db.row_factory = sqlite3.Row
-cursor = db.cursor()
+def query_db(sql,args=(),one=False):
+    '''connect and query- will retun one item if one=true and can accept arguments as tuple'''
+    db = sqlite3.connect(DB)
+    cursor = db.cursor()
+    cursor.execute(sql, args)
+    results = cursor.fetchall()
+    db.commit()
+    db.close()
+    return (results[0] if results else None) if one else results
 
 @app.route( '/' )
 def index():
@@ -27,13 +28,14 @@ def signup():
         email = request.form['email']
         username = request.form['username']
         password = request.form['psw']
+       
         hashed_password = generate_password_hash(password)
-        sql = "INSERT INTO user (email,username,psw) VALUES (?,?,?)"
-        res = query_db(sql,(email,username,hashed_password))
+
+        sql = "INSERT INTO user (username,password) VALUES (?,?)"
+        query_db(sql,(email, username,hashed_password))
         flash("Sign Up Successful")
-        redirect('/')
     return render_template('signup.html')
-    
+
 
 
 
@@ -42,7 +44,7 @@ def login():
     print(request.form)
     if request.method == "POST":
         username = request.form['username']
-        password = request.form['psw']
+        password = request.form['password']
         sql = "SELECT * FROM user WHERE username = ?"
         user = query_db(sql=sql, args=(username,),one=True)
         if user:
