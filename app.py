@@ -1,6 +1,8 @@
 from flask import Flask , render_template, request,flash, session, redirect
 import sqlite3 
 from werkzeug.security import generate_password_hash, check_password_hash
+from livereload import Server
+from pathlib import Path 
 
 app = Flask(__name__)
 
@@ -8,14 +10,32 @@ DB = 'database.db'
 app.config['SECRET_KEY'] = "SecretStarlightGlimmerKey"
 
 def query_db(sql,args=(),one=False):
-    '''connect and query- will retun one item if one=true and can accept arguments as tuple'''
+    """Connect to the db and run the provided query
+    Returns a list of dicts, a single dict OR an error
+    Will also execute INSERT, UPDATE and DELETE
+    """
     db = sqlite3.connect(DB)
+    db.row_factory = sqlite3.Row
     cursor = db.cursor()
-    cursor.execute(sql, args)
-    results = cursor.fetchall()
-    db.commit()
-    db.close()
-    return (results[0] if results else None) if one else results
+    try:
+        cursor.execute(sql, args)
+        results = [dict(row) for row in cursor.fetchall()]
+        db.commit
+
+        if not results:
+            return None
+        if one:
+            return results[0]
+        else:
+            return results
+
+    except Exception as e:
+        print(e)
+        return e 
+
+    finally:
+        db.close()
+
 
 @app.route( '/' )
 def index():
@@ -23,18 +43,24 @@ def index():
 
 @app.route( '/signup', methods=['GET', 'POST'])
 def signup():
-    print(request.form)
-    if request.method == 'POST':
-        email = request.form['email']
-        username = request.form['username']
-        password = request.form['psw']
-       
-        hashed_password = generate_password_hash(password)
-
-        sql = "INSERT INTO user (username,password) VALUES (?,?)"
-        query_db(sql,(email, username,hashed_password))
-        flash("Sign Up Successful")
-    return render_template('signup.html')
+ print(request.form)
+ if request.method == 'POST':
+           email = request.form['email']
+           username = request.form['username']
+           password = request.form['psw']
+           hashed_password = generate_password_hash(password)
+           sql = "INSERT INTO user (email, username, password) VALUES (?,?, ?)"
+           res = query_db(sql,(email,username,hashed_password))
+           if isinstance(res, Exception):
+               print("print", res)
+               if isinstance(res, sqlite3.IntegrityError):
+                   flash("Username already exists")
+               else:
+                   flash("An error has occured. please ")
+           else:
+               flash("Sign Up Successful")
+               redirect('/')
+ return render_template('signup.html')
 
 
 
