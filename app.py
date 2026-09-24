@@ -1,4 +1,4 @@
-from flask import Flask , render_template, request,flash, session, redirect
+from flask import Flask , render_template, request, flash, session, redirect
 import sqlite3 
 from werkzeug.security import generate_password_hash, check_password_hash
 from livereload import Server
@@ -8,6 +8,8 @@ app = Flask(__name__)
 
 DB = 'database.db'
 app.config['SECRET_KEY'] = "SecretStarlightGlimmerKey"
+
+UPLOAD_here = Path('static/UPlOAD')
 
 def query_db(sql,args=(),one=False):
     """Connect to the db and run the provided query
@@ -20,7 +22,7 @@ def query_db(sql,args=(),one=False):
     try:
         cursor.execute(sql, args)
         results = [dict(row) for row in cursor.fetchall()]
-        db.commit
+        db.commit()
 
         if not results:
             return None
@@ -45,23 +47,15 @@ def index():
 def signup():
  print(request.form)
  if request.method == 'POST':
-           email = request.form['email']
-           username = request.form['username']
-           password = request.form['psw']
-           hashed_password = generate_password_hash(password)
-           sql = "INSERT INTO user (email, username, password) VALUES (?,?, ?)"
-           res = query_db(sql,(email,username,hashed_password))
-           if isinstance(res, Exception):
-               print("print", res)
-               if isinstance(res, sqlite3.IntegrityError):
-                   flash("Username already exists")
-               else:
-                   flash("An error has occured. please ")
-           else:
-               flash("Sign Up Successful")
-               redirect('/')
- return render_template('signup.html')
-
+    email = request.form['email'] 
+    username = request.form['username']
+    password = request.form['psw']
+    hashed_password = generate_password_hash(password)
+    sql = "INSERT INTO user (email, username, password) VALUES (?,?, ?)"
+    query_db(sql,(email,username,hashed_password))
+    flash("signup sucessful")
+ return render_template("signup.html")
+ 
 
 
 
@@ -74,15 +68,24 @@ def login():
         sql = "SELECT * FROM user WHERE username = ?"
         user = query_db(sql=sql, args=(username,),one=True)
         if user:
-            if check_password_hash(user['psw'] ,password):
+            if check_password_hash(user['password'] ,password):
                 session['user'] = user
                 flash("logged in sucessfully")
-                redirect('/')
     return render_template('login.html')
+
+@app.route( '/logout')
+def logout():
+    session['user'] = None
+    return redirect('/')
     
 @app.route( '/libary' )
 def libary():
-    return render_template('libary.html')
+        return render_template('libary.html')
+
+@app.route('/Character')
+def Character():
+        return render_template('Character.html')
+
 
 @app.errorhandler(404)
 def page_not_found(error):
