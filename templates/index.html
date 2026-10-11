@@ -3,7 +3,6 @@
 <body class="body">
     {% include 'nav.html' %}
     {% raw %}{% endraw %} 
-<img src="bb2.jpg" alt="Nature" class="responsive">
     <h1>          </h1> 
      <center class="wel"><h1>    <br>
               <br>    
@@ -27,6 +26,18 @@
   }
 }
 
+body{
+/* the backgrounds image */
+    background-image: url(https://i.pinimg.com/736x/20/3f/8d/203f8daeda4b0a07dcbdb1b26e2e1add.jpg);
+    /* This shows the background in its full height */
+  height: 100%; 
+
+  /* helps Center and scale the image */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  }
+
 .responsive {
 width: 100%;
   height: auto;
@@ -34,7 +45,7 @@ width: 100%;
 .wel {
   font-family: 'Courier New', Courier, monospace;
   font-size: medium;
-  color: #d194da;
+  color: #491a50;
 }
 .testbtn {
   font-family: 'Courier New', Courier, monospace;

@@ -70,7 +70,7 @@ def login():
         if user:
             if check_password_hash(user['password'] ,password):
                 session['user'] = user
-                flash("logged in sucessfully")
+            flash("logged in sucessfully")
     return render_template('login.html')
 
 @app.route( '/logout')
