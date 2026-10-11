@@ -86,6 +86,9 @@ def libary():
 def Character():
         return render_template('Character.html')
 
+@app.route('/Location')
+def Location():
+    return render_template('location.html')
 
 @app.errorhandler(404)
 def page_not_found(error):
