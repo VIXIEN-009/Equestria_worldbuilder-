@@ -2,6 +2,7 @@
 {% include 'nav.html' %}
 {% block content %}
 
+
 <center><h1>Welcome to the libary <br>
   if you are not signed in <br>
    your characters and locations will not be saved</h1></center>
@@ -9,13 +10,13 @@
 <center><a href="/signup" class="signup">Sign up</a></center>
 <br>
 <br>
-{% if user %}
-<br>
-<center><a href="/Character" class="AddC"> Add Character </a></center>
-<br>
-<br>
-<br>
-<center><a href="/Location" class="AddL"> Add Location </a></center>
+{% if session["user"]["username"] %}
+  <br>
+  <center><a href="/Character" class="AddC"> Add Character </a></center>
+  <br>
+  <br>
+  <br>
+  <center><a href="/Location" class="AddL"> Add Location </a></center>
 {% endif %}
 <center>Sign in to continue </center>
 <style>
