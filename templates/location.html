@@ -6,7 +6,7 @@
 <div class="chartC">
 
 
-<center><form action="/Character" method="post"> 
+<center><form action="/Location" method="POST"> 
   <div class="container">
     <br>
 
@@ -17,7 +17,7 @@
 <div class="multiselect-container">
   <div class="select-box" onclick="toggleDropdown()"> 
     <b>locations biome </b>
-    <select>
+    <select name="type">
       <option>Badlands biome</option>
       <option>beach biome</option>
       <option>city</option>
@@ -47,14 +47,14 @@
     <br>
     <textarea id="description" name="description" rows="10" cols="50"> add description </textarea>
 <br>
-  <label for="History" class="text" ><b>History</b></label>
+  <label for="history" class="text" ><b>History</b></label>
     <br>
-    <textarea id="History" name="History rows="10" cols="50"> add backstory </textarea>
+    <textarea id="history" name="history" rows="10" cols="50"> add backstory </textarea>
  <br>   
-    <label for=" "></label>
+    
 
 
-      <button type="submit" class="addc">Add character</button>
+      <button type="submit" class="addc">Add location</button>
       <button type="reset" class="redo">reset</button>
     </div>
 </form></center>

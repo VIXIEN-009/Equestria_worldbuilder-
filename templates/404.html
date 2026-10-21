@@ -1,7 +1,46 @@
 {% extends 'base.html' %}
 {% include 'nav.html' %}
 {% block content %}
+<div class="square">
+<center><p class="text">404 error not exist </p></center>
+</div>
+<style>
+body{
+/* the backgrounds image */
+    background-image: url(https://i.pinimg.com/736x/df/dc/39/dfdc39361920f59918e4f3d2b47b2604.jpg);
+    /* This shows the background in its full height */
+  height: 100%; 
 
-<p>404 error not exist </p>
+  /* helps Center and scale the image */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
+
+}
+
+.text{
+  /* this helps changes the font size and the font style */
+  font-size: 100%;
+  font-family: 'Arial Narrow';
+  margin: 0,;
+  height: 100vh; /* vh means veiw point so this sets the hight to 100% */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.square{
+   display: block;
+    background-color: rgb(218, 200, 235);
+    border: 5px solid #a067b1;
+    background-color: #e4c4e9;
+    padding: 5em;
+    margin: auto;
+    height: 25em;
+    width: 35em;
+  text-size-adjust: 660px;
+}
+</style>
 {% endblock %}

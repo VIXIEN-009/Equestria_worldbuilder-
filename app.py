@@ -82,12 +82,38 @@ def logout():
 def libary():
         return render_template('libary.html')
 
-@app.route('/Character')
+@app.route('/Character', methods=("GET","POST"))
 def Character():
-        return render_template('Character.html')
+    print(request.form)
+    if request.method == 'POST':
+        name = request.form['name'] 
+        gender = request.form['gender']
+        birthday = request.form['birthday']
+        age = request.form['age']
+        species = request.form['species'] 
+        description = request.form['description']
+        backstory = request.form['backstory']
+        userId = session["user"]["ID"]
 
-@app.route('/Location')
+      
+        sql = "INSERT INTO Characters (name, gender, birthday, age, species, description, backstory, userId) VALUES (?,?, ?, ?, ?, ?, ?, ?)" 
+        query_db(sql,(name, gender, birthday, age, species, description, backstory, userId))
+        flash("character added ")
+    return render_template('Character.html')
+
+@app.route('/Location', methods=("GET","POST"))
 def Location():
+    print(request.form)
+    if request.method == 'POST':
+            name = request.form['name'] 
+            type = request.form['type']
+            description = request.form['description']
+            history = request.form['history']
+            userId = session["user"]["ID"]
+            
+            sql = "INSERT INTO Locations (name, type, description, history, userId) VALUES (?,?, ?, ?, ?,)"
+            query_db(sql,(name, type, description, history, userId))
+            flash("location added ")
     return render_template('location.html')
 
 @app.errorhandler(404)
