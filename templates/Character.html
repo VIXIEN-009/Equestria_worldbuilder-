@@ -13,12 +13,15 @@
     <label for="name" class="text"><b>Character name</b></label>
     <input type="text" placeholder="Enter name" name="name" required>
 <br>
-    <label for="gender" class="text"><b>gender</b></label>
-     <input type="radio" checked="checked" name="gender" style="margin-bottom:20px"> Female
-     <input type="radio" checked="checked" name="gender" style="margin-bottom:20px"> male
-    <input type="radio" checked="checked" name="gender" style="margin-bottom:20px"> non-binary
-    <input type="radio" checked="checked" name="gender" style="margin-bottom:20px"> all
-    </label>
+    <div class="multiselect-container">
+  <div class="select-box" onclick="toggleDropdown()"> 
+    <b>what gender are they </b>
+    <select name="gender">
+      <option>female</option>
+      <option>male</option>
+      <option>non-binary</option>
+      <option>all</option>
+      <option>alpha male</option>
 <br>
 <label for="birthday" class="text"><b>Character Birthday</b></label>
     <input type="date" id="birthday" name="birthday" required>
@@ -34,7 +37,7 @@
 <br>
   <label for="backstory" class="text" ><b>Backstory</b></label>
     <br>
-    <textarea id="backstory" name="backstory rows="4" cols="50"> add backstory </textarea>
+    <textarea id="backstory" name="backstory" rows="4" cols="50"> add backstory </textarea>
  <br> 
 
 

@@ -2,22 +2,29 @@
 {% include 'nav.html' %}
 {% block content %}
 
-
+<body>
 <center><h1>Welcome to the libary <br>
-  if you are not signed in <br>
-   your characters and locations will not be saved</h1></center>
+{% if not session['user'] %}
+  if you are not signed in </h1></center>
 
-<center><a href="/signup" class="signup">Sign up</a></center>
-<br>
-<br>
+  <center><a href="/signup" class="signup">Sign up</a></center>
   <br>
+  <br>
+  <center><a href="/login" class="signup">login</a></center>
+  <br>
+  <br>
+{% else %}
   <center><a href="/Character" class="AddC"> Add Character </a></center>
   <br>
   <br>
   <br>
   <center><a href="/Location" class="AddL"> Add Location </a></center>
-<center>Sign in to continue </center>
+{% endif %}
+  <center>Characters added</center>
+
+</body>
 <style>
+
 .signup {
   font-family: 'Courier New', Courier, monospace;
   font-size: medium;

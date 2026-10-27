@@ -54,6 +54,7 @@ def signup():
     sql = "INSERT INTO user (email, username, password) VALUES (?,?, ?)"
     query_db(sql,(email,username,hashed_password))
     flash("signup sucessful")
+    return redirect('/')
  return render_template("signup.html")
  
 
@@ -76,7 +77,10 @@ def login():
 @app.route( '/logout')
 def logout():
     session['user'] = None
+    flash("your logged out")
     return redirect('/')
+
+
     
 @app.route( '/libary' )
 def libary():
@@ -85,6 +89,11 @@ def libary():
 @app.route('/Character', methods=("GET","POST"))
 def Character():
     print(request.form)
+    try:
+        user = session['user']
+    except KeyError:
+        flash("Please log in to continue")
+        return redirect('/login')
     if request.method == 'POST':
         name = request.form['name'] 
         gender = request.form['gender']
@@ -93,12 +102,13 @@ def Character():
         species = request.form['species'] 
         description = request.form['description']
         backstory = request.form['backstory']
-        userId = session["user"]["ID"]
+        userId = session['user']['ID']
 
       
-        sql = "INSERT INTO Characters (name, gender, birthday, age, species, description, backstory, userId) VALUES (?,?, ?, ?, ?, ?, ?, ?)" 
+        sql = "INSERT INTO Characters (name, gender, birthday, age, species, description, backstory, user) VALUES (?,?, ?, ?, ?, ?, ?, ?)" 
         query_db(sql,(name, gender, birthday, age, species, description, backstory, userId))
         flash("character added ")
+        return redirect('/libary')
     return render_template('Character.html')
 
 @app.route('/Location', methods=("GET","POST"))

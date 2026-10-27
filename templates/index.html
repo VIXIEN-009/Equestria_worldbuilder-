@@ -15,11 +15,14 @@
          where they live or where they got that magical sword. <br>
                                      <br> 
          this is the place to find it and to keep track. 
+{% if not session['user'] %}
              
         <h2> Would you like to make an account with us? </h2></center></p>
     
 <center><a href="/signup" class="testbtn">Sign up</a></center>
+{% else %}
 
+{% endif %}
 <body>
 <style>
 
