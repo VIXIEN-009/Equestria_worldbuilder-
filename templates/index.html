@@ -15,6 +15,8 @@
          where they live or where they got that magical sword. <br>
                                      <br> 
          this is the place to find it and to keep track. 
+
+ <!--checks is a user is logged in -->
 {% if not session['user'] %}
              
         <h2> Would you like to make an account with us? </h2></center></p>
@@ -26,6 +28,7 @@
 <body>
 <style>
 
+/* this applies all the continuing CSS if the screen width is 300px or less*/
 @media screen and (max-width: 300px) {
   .body {
      width: 150%;

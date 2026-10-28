@@ -38,9 +38,11 @@ def query_db(sql,args=(),one=False):
     finally:
         db.close()
 
-
+# this  is the route for the home pae of my website and gives the page its own url 
 @app.route( '/' )
+# this defones the index.html and helps run the home page 
 def index():
+# renders and returns the hmtl file which means shows the user the home page on their browser 
     return render_template('index.html')
 
 @app.route( '/signup', methods=['GET', 'POST'])
@@ -50,8 +52,11 @@ def signup():
     email = request.form['email'] 
     username = request.form['username']
     password = request.form['psw']
+    #hashes the password when it is entered into the database #
     hashed_password = generate_password_hash(password)
+    # this defines the sql stamemenet of putting a new user into the users table 
     sql = "INSERT INTO user (email, username, password) VALUES (?,?, ?)"
+    #this here excutes the sql query and sends it to the database 
     query_db(sql,(email,username,hashed_password))
     flash("signup sucessful")
     return redirect('/')
@@ -68,14 +73,21 @@ def login():
         password = request.form['password']
         sql = "SELECT * FROM user WHERE username = ?"
         user = query_db(sql=sql, args=(username,),one=True)
+    
+    #this if statement checks if the user exists in my database to continue 
         if user:
+            
+            # checks if the password that is entered is the same as the one in the database 
             if check_password_hash(user['password'] ,password):
+               
+                #if it matches the user is stored in a session which will stay there till they are loged out 
                 session['user'] = user
             flash("logged in sucessfully")
     return render_template('login.html')
 
 @app.route( '/logout')
 def logout():
+    # this sets the session user to none so the user would have to log in again to get back to session user 
     session['user'] = None
     flash("your logged out")
     return redirect('/')
@@ -84,6 +96,7 @@ def logout():
     
 @app.route( '/libary' )
 def libary():
+        sql = "SELECT * FROM Character WHERE userid  = session['user']['Id']"
         return render_template('libary.html')
 
 @app.route('/Character', methods=("GET","POST"))
@@ -91,6 +104,7 @@ def Character():
     print(request.form)
     try:
         user = session['user']
+    #this catches the main error and tells the user to log in to continue  
     except KeyError:
         flash("Please log in to continue")
         return redirect('/login')

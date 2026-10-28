@@ -14,6 +14,7 @@
     <input type="text" placeholder="Enter name" name="name" required>
 <br>
     <div class="multiselect-container">
+      <!--creates a cointaner for the selection box and toggleDropdown() creates a drop down menu when clicked -->
   <div class="select-box" onclick="toggleDropdown()"> 
     <b>what gender are they </b>
     <select name="gender">
@@ -40,8 +41,9 @@
     <textarea id="backstory" name="backstory" rows="4" cols="50"> add backstory </textarea>
  <br> 
 
-
+  <!-- creates a submit button for the form which adds a character to the database-->
       <button type="submit" class="addc">Add character</button>
+  <!--creates a reset button so the user can reset he form and stes the forms boxes to empty -->
       <button type="reset" class="redo">reset</button>
     </div>
 </form></center>
@@ -60,7 +62,9 @@ body{
   background-size: cover;
   }
   .chartC{
+  
     display: block;
+    /* sets thebackground colour using rgb scale */
     background-color: rgb(218, 200, 235);
     border: 5px solid #a067b1;
     background-color: #e4c4e9;
@@ -72,6 +76,7 @@ body{
   }
 .addc{
   height: 30px;
+    /* sets thebackground colour using rgb scale */
   background-color: rgb(89, 39, 136);
   color: beige;
   font-style: italic;
