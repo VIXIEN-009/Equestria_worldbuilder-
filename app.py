@@ -140,6 +140,15 @@ def Location():
             flash("location added ")
     return render_template('location.html')
 
+@app.route('/character_list')
+def character_list():
+    userId = session["user"]["ID"]
+    #Characters = query_db(f"SELECT Characters.name, Characters.age, Characters.species, Locations.name, Characters.description FROM Characters JOIN Locations on Characters.locations = Locations.id WHERE Characters.user = {userId};")
+    Characters = query_db(f"SELECT Characters.name, Characters.age, Characters.species, Characters.locations, Characters.description FROM Characters LEFT JOIN Locations ON Characters.locations = Locations.ID WHERE Characters.user = {userId};")
+
+    print(Characters, userId)
+    return render_template('character_list.html', Characters=Characters)
+
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
