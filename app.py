@@ -1,4 +1,4 @@
-from flask import Flask , render_template, request, flash, session, redirect
+from flask import Flask ,render_template, request, flash, session, redirect
 import sqlite3 
 from werkzeug.security import generate_password_hash, check_password_hash
 from livereload import Server
@@ -101,7 +101,7 @@ def libary():
 
 @app.route('/Character', methods=("GET","POST"))
 def Character():
-    print(request.form)
+    print("sane sane check")
     try:
         user = session['user']
     #this catches the main error and tells the user to log in to continue  
@@ -117,13 +117,19 @@ def Character():
         description = request.form['description']
         backstory = request.form['backstory']
         userId = session['user']['ID']
-
+        locations = request.form['location']['value']
+        
       
         sql = "INSERT INTO Characters (name, gender, birthday, age, species, description, backstory, user) VALUES (?,?, ?, ?, ?, ?, ?, ?)" 
         query_db(sql,(name, gender, birthday, age, species, description, backstory, userId))
+        
         flash("character added ")
         return redirect('/libary')
-    return render_template('Character.html')
+    userId = session['user']['ID']
+    locations = query_db(f"SELECT Locations.id FROM Locations WHERE Locations.user = {userId};")
+    locations = query_db(f"SELECT Locations.name FROM Locations WHERE Locations.user = {userId};")
+    print(locations, userId, "sanity")
+    return render_template('Character.html', locations=locations)
 
 @app.route('/Location', methods=("GET","POST"))
 def Location():
@@ -133,21 +139,29 @@ def Location():
             type = request.form['type']
             description = request.form['description']
             history = request.form['history']
-            userId = session["user"]["ID"]
+            user = session["user"]["ID"]
             
-            sql = "INSERT INTO Locations (name, type, description, history, userId) VALUES (?,?, ?, ?, ?,)"
-            query_db(sql,(name, type, description, history, userId))
+            sql = "INSERT INTO Locations (name, type, description, history, user) VALUES (?,?, ?, ?, ?)"
+            query_db(sql,(name, type, description, history, user))
             flash("location added ")
     return render_template('location.html')
 
 @app.route('/character_list')
 def character_list():
     userId = session["user"]["ID"]
-    #Characters = query_db(f"SELECT Characters.name, Characters.age, Characters.species, Locations.name, Characters.description FROM Characters JOIN Locations on Characters.locations = Locations.id WHERE Characters.user = {userId};")
-    Characters = query_db(f"SELECT Characters.name, Characters.age, Characters.species, Characters.locations, Characters.description FROM Characters LEFT JOIN Locations ON Characters.locations = Locations.ID WHERE Characters.user = {userId};")
+    Characters = query_db(f"SELECT Characters.name, Characters.age, Characters.species, locations.name AS location_name, Characters.description FROM Characters LEFT JOIN locations ON Characters.locations = locations.ID WHERE Characters.user = {userId};")
 
     print(Characters, userId)
     return render_template('character_list.html', Characters=Characters)
+
+@app.route('/location_list')
+def location_list():
+    userId = session["user"]["ID"]
+    
+    locations = query_db(f"SELECT locations.name, locations.type, locations.description, locations.History FROM locations WHERE locations.user = {userId};")
+    
+    print(locations, userId)
+    return render_template('location_list.html', locations=locations)
 
 @app.errorhandler(404)
 def page_not_found(error):

@@ -23,6 +23,7 @@
       <option>non-binary</option>
       <option>all</option>
       <option>alpha male</option>
+    </select>
 <br>
 <label for="birthday" class="text"><b>Character Birthday</b></label>
     <input type="date" id="birthday" name="birthday" required>
@@ -40,6 +41,30 @@
     <br>
     <textarea id="backstory" name="backstory" rows="4" cols="50"> add backstory </textarea>
  <br> 
+
+
+
+ <label for="locations" class="text" ><b>where are they located</b></label>
+ <button class="LB"><a class="LB" href="/Location">add Location </a></button>
+{% if not locations %}
+  <p> you currently have no locations </p>
+
+{% else %}    
+
+<div class="multiselect-container">
+  <div class="select-box" onclick="toggleDropdown()"> 
+    <b>locations</b>
+    <select name="type">
+      {% for location in locations %}
+        <option value="{{location["id"]}}">{{location["name"]}}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+{% endif%}
+<br>
+
+
 
   <!-- creates a submit button for the form which adds a character to the database-->
       <button type="submit" class="addc">Add character</button>
@@ -83,6 +108,17 @@ body{
   font-family:'Courier New', Courier, monospace
 }
 .addc:hover{
+  background-color: rgb(53, 18, 87);
+}
+.LB{
+    text-decoration: aliceblue;
+  height: 30px;
+  background-color: rgb(89, 39, 136);
+  color: beige;
+  font-style: italic;
+  font-family:'Courier New', Courier, monospace
+}
+.LB :hover{
   background-color: rgb(53, 18, 87);
 }
 .text{
